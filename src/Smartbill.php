@@ -15,7 +15,7 @@ class Smartbill
         'exempt' => ['percentage' => 0, 'name' => 'SFDD'], // scutit de TVA (afara UE)
         'reverse' => ['percentage' => 0, 'name' => 'Taxare inversa'], // taxare inversa (UE)
         'RO' => ['percentage' => 19, 'name' => 'Normala'],
-        'GB' => ['percentage' => 0, 'name' => 'SFDD'], // ???
+        'GB' => ['percentage' => 0, 'name' => 'SFDD'], // recent iesita din UE
         'DE' => ['percentage' => 19, 'name' => 'Germania'],
         'DK' => ['percentage' => 25, 'name' => 'DK VAT'],
         'NL' => ['percentage' => 21, 'name' => 'NL VAT'],
