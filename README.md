@@ -39,6 +39,15 @@ Pentru a genera facturi Smartbill, trimite ca si parametru data incepand cu care
 $ composer generate 2022-07-01
 ```
 
+## Limitari
+
+In prezent exista urmatoarele limitari:
+
+1. Se obtin maxim 100 Stripe charges la o executie. Daca este nevoie de mai multe, variantele ar fi
+  a. actualizarea numarului maxim de charges obtinute de la Stripe (vezi `Stripe::MAX_ITEMS_PER_REQUEST`),
+  b. rularea pe intervale mai scurte sau
+  c. actualizarea scriptului sa pagineze rezultatele.
+
 ## Teste
 
 Acest script are teste, pentru a le executa:

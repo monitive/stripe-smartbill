@@ -14,7 +14,10 @@ class Main
     {
         $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
         $dotenv->load();
-        $dotenv->required(['STRIPE_SECRET_KEY']);
+        $dotenv->required([
+            'STRIPE_SECRET_KEY',
+            'SMARTBILL_API_KEY'
+        ]);
     }
 
     /**
