@@ -57,7 +57,8 @@ class Generate
             $smartbill_payment = $smartbill->getPayment($smartbill_id['number']);
             if ($smartbill_payment['invoiceTotalAmount'] !== $smartbill_payment['paidAmount']) {
                 throw new \Exception(sprintf(
-                    'Invoice %s%s value mismatch, Stripe invoice %s value %.2f, Smartbill invoice value %.2f. Please check the invoices.',
+                    'Invoice %s%s value mismatch, Stripe invoice %s value %.2f, Smartbill invoice value %.2f.'
+                        . ' Please check the invoices.',
                     $smartbill_id['series'],
                     $smartbill_id['number'],
                     $invoice['number'],
