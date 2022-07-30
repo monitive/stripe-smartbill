@@ -1,8 +1,8 @@
 # Stripe To Smartbill
 
-🇺🇬🇧Generate [Smartbill](https://www.smartbill.ro) invoices based on [Stripe](https://stripe.com) payments &amp; invoices. This tool is useful for Romanian organizations that use Smartbill for invoicing while using Stripe as their payment processor. Therefore, documentation and instructions below are in Romanian language.
+🇬🇧 Generate [Smartbill](https://www.smartbill.ro) invoices based on [Stripe](https://stripe.com) payments &amp; invoices. This tool is useful for Romanian organizations that use Smartbill for invoicing while using Stripe as their payment processor. Therefore, documentation and instructions below are in Romanian language.
 
-🇷🇴 Acest script vanilla PHP cu dependinte minime genereaza facturi Smartbill pe baza platilor si facturilor Stripe.
+🇷🇴 Acest script vanilla PHP cu dependinte minime genereaza facturi Smartbill pe baza platilor si facturilor Stripe deja emise.
 
 ## Cerinte
 
