@@ -26,13 +26,17 @@ class Generate
         asort($charges);
 
         foreach ($charges as $timestamp => $charge_id) {
+            // Get the charge details from Stripe.
             $charge = $stripe->getChargeById($charge_id);
             $invoice = $stripe->getInvoiceById($charge['invoice']);
             $customer = $stripe->getCustomerById($charge['customer']);
 
+            // Create the Smartbill invoice.
             $smartbill = new Smartbill($this->settings['SMARTBILL_API_KEY']);
-            $smartbill->createInvoice($invoice, $customer, $charge);
+            $smartbill_id = $smartbill->createInvoice($invoice, $customer, $charge);
+
+            // Update the charge with the Smartbill invoice ID.
+            //TODO: $stripe->updateChargeMeta('smartbill_invoice', $smartbill_id);
         }
-        print_r($charges);
     }
 }
