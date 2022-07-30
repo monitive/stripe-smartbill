@@ -49,7 +49,7 @@ $ composer test
 
 ## Colaborare
 
-Pentru a semnala probleme, deschide un [Issue](issues) nou.
+Pentru a semnala probleme, deschide un Issue nou.
 
 Pentru a aduce imbunatatiri sau reparatii acestui script, oricing poate face fork si deschide un Pull Request inapoi.
 

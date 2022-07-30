@@ -4,37 +4,29 @@ declare(strict_types=1);
 
 namespace App;
 
+use DateTime;
 use Dotenv\Dotenv;
 use GuzzleHttp\Client;
 
 class Main
 {
-    public static function remoteStart(): void
+    private static function loadConfig(): void
     {
         $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
-        $dotenv->required('DATABASE_DSN');
         $dotenv->load();
-
-        $main = new self();
-        $main->run();
+        $dotenv->required(['STRIPE_SECRET_KEY']);
     }
 
-    public function run()
+    /**
+     * Genereaza facturi Smartbill pe baza platilor din Stripe
+     */
+    public static function generate(): int
     {
-        echo 'Hello World!';
+        self::loadConfig();
 
-        $client = new Client([
-            // Base URI is used with relative requests
-            'base_uri' => $_ENV['TARGET_URL'],
-            // You can set any number of default request options.
-            'timeout'  => 2.0,
-        ]);
+        $generate = new Generate($_ENV);
+        $generate->run(new DateTime('2022-07-01'));
 
-        $response = $client->request('GET', 'test');
-    }
-
-    public function check()
-    {
-        return 69;
+        return 0;
     }
 }
