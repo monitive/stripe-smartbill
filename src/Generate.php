@@ -9,10 +9,12 @@ use DateTime;
 class Generate
 {
     private array $settings;
+    private Logger $logger;
 
     public function __construct(array $settings)
     {
         $this->settings = $settings;
+        $this->logger = new Logger();
     }
 
     public function run(DateTime $date_start): void
@@ -25,11 +27,21 @@ class Generate
         // the correct chronological order in which the charges have been created.
         asort($charges);
 
+        $this->logger->log('Found ' . count($charges) . ' charges to process...');
+
         foreach ($charges as $timestamp => $charge_id) {
             // Get the charge details from Stripe.
             $charge = $stripe->getChargeById($charge_id);
             $invoice = $stripe->getInvoiceById($charge['invoice']);
             $customer = $stripe->getCustomerById($charge['customer']);
+
+            $this->logger->log(sprintf(
+                'Stripe charge %s created %s value %s %.2f',
+                $charge_id,
+                DateTime::createFromFormat('U', (string)$timestamp)->format('Y-m-d H:i:s'),
+                strtoupper($charge['currency']),
+                $charge['amount'] / 100
+            ));
 
             // Create the Smartbill invoice.
             $smartbill = new Smartbill($this->settings['SMARTBILL_API_KEY']);
