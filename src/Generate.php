@@ -18,24 +18,8 @@ class Generate
 
     public function run(DateTime $date_start): void
     {
-        $client = new Client([
-            // Base URI is used with relative requests
-            'base_uri' => 'https://api.stripe.com',
-            // You can set any number of default request options.
-            'timeout'  => 10.0,
-        ]);
-        $response = $client->request('GET', 'v1/charges', [
-            'query' => [
-                'limit' => 100,
-                'created[gte]' => $date_start->getTimestamp(),
-            ],
-            'auth' => [$this->settings['STRIPE_SECRET_KEY'], '']
-        ]);
-        $body = json_decode($response->getBody()->getContents(), true);
-
-        foreach ($body['data'] as $charge) {
-            echo $charge['id'] . ' ' . $charge['amount'] . ' ' . $charge['created'] . ' ';
-            echo DateTime::createFromFormat('U', (string)$charge['created'])->format('Y-m-d') . "\n";
-        }
+        $stripe = new Stripe($this->settings['STRIPE_SECRET_KEY']);
+        $charges = $stripe->getChargeIdsAfterDate($date_start);
+        print_r($charges);
     }
 }

@@ -9,27 +9,49 @@ use GuzzleHttp\Client;
 
 class Stripe
 {
-    public function getChargeIdsAfterDate(DateTime $date_time): array
+    private string $secret_key;
+
+    public function __construct(string $secret_key)
     {
-        $client = new Client([
-            // Base URI is used with relative requests
-            'base_uri' => 'https://api.stripe.com',
-            // You can set any number of default request options.
-            'timeout'  => 10.0,
-        ]);
-        $response = $client->request('GET', 'v1/charges', [
-            'query' => [
-                'limit' => 100,
-                'created[gte]' => $date_start->getTimestamp(),
-            ],
-            'auth' => [$this->settings['STRIPE_SECRET_KEY'], '']
-        ]);
-        $body = json_decode($response->getBody()->getContents(), true);
+        $this->secret_key = $secret_key;
+    }
+
+    public function getChargeIdsAfterDate(DateTime $date_start): array
+    {
+        $stripe_charges = $this->getCharges($date_start);
 
         $charges = [];
-        foreach ($body['data'] as $charge) {
+        foreach ($stripe_charges as $charge) {
             $charges[] = $charge['id'];
         }
         return $charges;
+    }
+
+    private function getCharges(DateTime $date_start): array
+    {
+        return $this->sendGetRequest('v1/charges', [
+            'limit' => 100,
+            'created[gte]' => $date_start->getTimestamp(),
+        ]);
+    }
+
+    private function sendGetRequest(string $path, array $parameters = []): array
+    {
+        $response = $this->getClient()->request('GET', $path, [
+            'query' => $parameters,
+            'auth' => [$this->secret_key, '']
+        ]);
+
+        $body = json_decode($response->getBody()->getContents(), true);
+
+        return $body['data'];
+    }
+
+    private function getClient(): Client
+    {
+        return new Client([
+            'base_uri' => 'https://api.stripe.com',
+            'timeout'  => 10.0,
+        ]);
     }
 }

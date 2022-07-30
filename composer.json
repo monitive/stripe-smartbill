@@ -8,8 +8,8 @@
     },
     "scripts": {
         "generate": "App\\Main::generate",
-        "test": [
-            "vendor/bin/phpunit",
+        "test": "vendor/bin/phpunit",
+        "syntax": [
             "vendor/bin/phpcbf --standard=PSR12 src/",
             "vendor/bin/phpcs --standard=PSR12 src/"
         ]
