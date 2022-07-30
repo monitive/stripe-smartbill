@@ -36,8 +36,12 @@ Editeaza fisierul `.env` si seteaza directivele in mod corespunzator.
 Pentru a genera facturi Smartbill, trimite ca si parametru data incepand cu care vrei sa generezi:
 
 ```shell
-$ composer generate 2022-07-01
+$ composer generate 2022-07-01 [--verbose]
 ```
+
+Parametrii:
+
+- `--verbose`: Afiseaza stack trace in caz de eroare.
 
 ## Limitari
 

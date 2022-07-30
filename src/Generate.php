@@ -33,7 +33,7 @@ class Generate
             // Get the charge details from Stripe.
             $charge = $stripe->getChargeById($charge_id);
             $invoice = $stripe->getInvoiceById($charge['invoice']);
-            $customer = $stripe->getCustomerById($charge['customer']);
+            // $customer = $stripe->getCustomerById($charge['customer']);
 
             $this->logger->log(sprintf(
                 'Stripe charge %s created %s value %s %.2f',
@@ -44,8 +44,27 @@ class Generate
             ));
 
             // Create the Smartbill invoice.
-            $smartbill = new Smartbill($this->settings['SMARTBILL_API_KEY']);
-            $smartbill_id = $smartbill->createInvoice($invoice, $customer, $charge);
+            $smartbill = new Smartbill($this->settings);
+            $smartbill_id = $smartbill->createInvoice($invoice, $charge);
+
+            $this->logger->log(sprintf(
+                'Created Smartbill invoice %s%s',
+                $smartbill_id['series'],
+                $smartbill_id['number']
+            ));
+
+            // Check created invoice value vs payment value
+            $smartbill_payment = $smartbill->getPayment($smartbill_id['number']);
+            if ($smartbill_payment['invoiceTotalAmount'] !== $smartbill_payment['paidAmount']) {
+                throw new \Exception(sprintf(
+                    'Invoice %s%s value mismatch, Stripe invoice %s value %.2f, Smartbill invoice value %.2f. Please check the invoices.',
+                    $smartbill_id['series'],
+                    $smartbill_id['number'],
+                    $invoice['number'],
+                    $smartbill_payment['paidAmount'],
+                    $smartbill_payment['invoiceTotalAmount']
+                ));
+            }
 
             // Update the charge with the Smartbill invoice ID.
             //TODO: $stripe->updateChargeMeta('smartbill_invoice', $smartbill_id);

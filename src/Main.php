@@ -16,7 +16,9 @@ class Main
         $dotenv->load();
         $dotenv->required([
             'STRIPE_SECRET_KEY',
-            'SMARTBILL_API_KEY'
+            'SMARTBILL_API_KEY',
+            'SMARTBILL_SERIES',
+            'SMARTBILL_COMPANY_CUI'
         ]);
     }
 
