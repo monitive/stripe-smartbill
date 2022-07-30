@@ -14,9 +14,15 @@ class Stripe
 
     private string $secret_key;
 
-    public function __construct(string $secret_key)
+    private Client $client;
+
+    public function __construct(string $secret_key = '')
     {
         $this->secret_key = $secret_key;
+        $this->client = new Client([
+            'base_uri' => 'https://api.stripe.com',
+            'timeout'  => self::REQUEST_TIMEOUT,
+        ]);
     }
 
     public function getChargeIdsAfterDateWithoutSmartbillMeta(DateTime $date_start): array
@@ -69,7 +75,7 @@ class Stripe
 
     private function sendGetRequest(string $path, array $parameters = []): array
     {
-        $response = $this->getClient()->request('GET', $path, [
+        $response = $this->client->request('GET', $path, [
             'query' => $parameters,
             'auth' => [$this->secret_key, '']
         ]);
@@ -79,11 +85,10 @@ class Stripe
         return $body;
     }
 
-    private function getClient(): Client
+    public function setClient(Client $client): self
     {
-        return new Client([
-            'base_uri' => 'https://api.stripe.com',
-            'timeout'  => self::REQUEST_TIMEOUT,
-        ]);
+        $this->client = $client;
+
+        return $this;
     }
 }
