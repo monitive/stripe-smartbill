@@ -11,7 +11,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
-final class ExampleTest extends TestCase
+final class StripeTest extends TestCase
 {
     public function testItRetrievesStripeChargeIdsForSucceededChargesWithoutSmartbillMetaInvoice()
     {
