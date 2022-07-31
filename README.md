@@ -88,6 +88,18 @@ Acest script are teste, pentru a le executa:
 $ composer test
 ```
 
+Verificarea sintaxei PSR-12 se face cu:
+
+```shell
+$ composer syntax
+```
+
+Repararea problemelor minore de sintaxa se face cu:
+
+```shell
+$ composer fix
+```
+
 ## Colaborare
 
 Pentru a semnala probleme, deschide un Issue nou.
