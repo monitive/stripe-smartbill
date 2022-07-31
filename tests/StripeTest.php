@@ -111,44 +111,6 @@ final class StripeTest extends TestCase
         ];
     }
 
-    public function testItRetrievesASingleCustomer()
-    {
-        $stripe = new Stripe();
-        $mock = new MockHandler([
-            new Response(200, [], json_encode($this->makeStripeCustomer())),
-        ]);
-        $stripe->setClient(
-            new Client(['handler' => HandlerStack::create($mock)])
-        );
-
-        // execute
-        $customer = $stripe->getCustomerById('ch_3');
-
-        // assert
-        $this->assertSame('cus_J', $customer['id']);
-        $this->assertSame('John Doe', $customer['name']);
-        $this->assertSame('London', $customer['address']['city']);
-    }
-
-    private function makeStripeCustomer(): array
-    {
-        return [
-            'id' => 'cus_J',
-            'object' => 'customer',
-            'created' => 1659100000,
-            'name' => 'John Doe',
-            'metadata' => [],
-            'address' => [
-                'city' => 'London',
-                'country' => 'GB',
-                'line1' => '43 Burnham Way',
-                'line2' => '',
-                'postal_code' => '',
-                'state' => ''
-            ]
-        ];
-    }
-
     public function testItRetrievesASingleInvoice()
     {
         $stripe = new Stripe();

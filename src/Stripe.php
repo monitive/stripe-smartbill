@@ -76,14 +76,6 @@ class Stripe
         ));
     }
 
-    public function getCustomerById(string $customer_id): array
-    {
-        return $this->sendGetRequest(sprintf(
-            'v1/customers/%s',
-            $customer_id
-        ));
-    }
-
     /**
      * Get a list of Stripe charges after a specific date.
      */
