@@ -29,6 +29,11 @@ class Generate
 
         $this->logger->log('Found ' . count($charges) . ' charges to process...');
 
+        $smartbill = new Smartbill(
+            $this->settings,
+            json_decode(file_get_contents(__DIR__ . '/../vat_rates.json'), true)
+        );
+
         foreach ($charges as $timestamp => $charge_id) {
             // Get the charge details from Stripe.
             $charge = $stripe->getChargeById($charge_id);
@@ -44,7 +49,6 @@ class Generate
             ));
 
             // Create the Smartbill invoice.
-            $smartbill = new Smartbill($this->settings);
             $smartbill_id = $smartbill->createInvoice($invoice, $charge);
 
             $this->logger->log(sprintf(

@@ -9,10 +9,8 @@
     "scripts": {
         "generate": "App\\Main::generate",
         "test": "vendor/bin/phpunit",
-        "syntax": [
-            "vendor/bin/phpcbf --standard=PSR12 src/ tests/",
-            "vendor/bin/phpcs --standard=PSR12 src/ tests/"
-        ]
+        "syntax": "vendor/bin/phpcs",
+        "fix": "vendor/bin/phpcbf"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",

@@ -1,0 +1,38 @@
+{
+    "exempt": {
+        "percentage": 0,
+        "name": "SFDD"
+    },
+    "reverse": {
+        "percentage": 0,
+        "name": "Taxare inversa"
+    },
+    "RO": {
+        "percentage": 19,
+        "name": "Normala"
+    },
+    "GB": {
+        "percentage": 0,
+        "name": "SFDD"
+    },
+    "DE": {
+        "percentage": 19,
+        "name": "Germania"
+    },
+    "DK": {
+        "percentage": 25,
+        "name": "DK VAT"
+    },
+    "NL": {
+        "percentage": 21,
+        "name": "NL VAT"
+    },
+    "FR": {
+        "percentage": 20,
+        "name": "FR VAT"
+    },
+    "GR": {
+        "percentage": 24,
+        "name": "Grecia"
+    }
+}

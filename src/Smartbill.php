@@ -11,25 +11,19 @@ class Smartbill
 {
     private const REQUEST_TIMEOUT = 10.0;
 
-    private const VAT_RATES = [
-        'exempt' => ['percentage' => 0, 'name' => 'SFDD'], // scutit de TVA (afara UE)
-        'reverse' => ['percentage' => 0, 'name' => 'Taxare inversa'], // taxare inversa (UE)
-        'RO' => ['percentage' => 19, 'name' => 'Normala'],
-        'GB' => ['percentage' => 0, 'name' => 'SFDD'], // recent iesita din UE
-        'DE' => ['percentage' => 19, 'name' => 'Germania'],
-        'DK' => ['percentage' => 25, 'name' => 'DK VAT'],
-        'NL' => ['percentage' => 21, 'name' => 'NL VAT'],
-        'FR' => ['percentage' => 20, 'name' => 'FR VAT'],
-        'GR' => ['percentage' => 24, 'name' => 'Grecia'],
-    ];
-
     private array $settings;
+    private array $vat_rates;
     private string $api_token;
 
     private Client $client;
 
-    public function __construct(array $settings)
+    public function __construct(array $settings, array $vat_rates)
     {
+        if (!isset($vat_rates['exempt']) || !isset($vat_rates['reverse']) || !isset($vat_rates['RO'])) {
+            throw new \RuntimeException('VAT rates are not defined, please ensure vat_rates.json contains VAT rates.');
+        }
+
+        $this->vat_rates = $vat_rates;
         $this->api_token = base64_encode($settings['SMARTBILL_API_KEY']);
         $this->settings = $settings;
         $this->client = new Client([
@@ -40,14 +34,21 @@ class Smartbill
 
     public function createInvoice(array $stripe_invoice, array $stripe_charge): array
     {
+        $smartbill_invoice = $this->buildInvoice($stripe_invoice, $stripe_charge);
+
+        return $this->sendPostJsonRequest('SBORO/api/invoice', $smartbill_invoice);
+    }
+
+    public function buildInvoice(array $stripe_invoice, array $stripe_charge): array
+    {
         // Smartbill issue date will be the Stripe payment date, not Stripe invoice date
         $issueDate = DateTime::createFromFormat('U', (string) $stripe_charge['created'])->format('Y-m-d');
 
         $smartbill_invoice = [
             'companyVatCode' => (string) $this->settings['SMARTBILL_COMPANY_CUI'],
             'client' => [
-                'address' => $stripe_invoice['customer_address']['line1']
-                    . ' ' . $stripe_invoice['customer_address']['line2'],
+                'address' => trim($stripe_invoice['customer_address']['line1']
+                    . ' ' . $stripe_invoice['customer_address']['line2']),
                 'city' => $stripe_invoice['customer_address']['city'],
                 'county' => $stripe_invoice['customer_address']['state'],
                 'code' => $stripe_invoice['customer'],
@@ -90,25 +91,25 @@ class Smartbill
 
         if ($stripe_invoice['customer_tax_exempt'] === 'none') {
             $customer_country = $stripe_invoice['customer_address']['country'];
-            if (!isset(self::VAT_RATES[$customer_country])) {
+            if (!isset($this->vat_rates[$customer_country])) {
                 throw new \Exception(
                     'Country ' . $customer_country . ' not defined in Smarbill::VAT_RATES rates, please define.'
                 );
             }
-            $taxName = self::VAT_RATES[$customer_country]['name'];
-            $taxPercentage = self::VAT_RATES[$customer_country]['percentage'];
+            $taxName = $this->vat_rates[$customer_country]['name'];
+            $taxPercentage = $this->vat_rates[$customer_country]['percentage'];
         }
 
         if ($stripe_invoice['customer_tax_exempt'] === 'exempt') {
-            $taxName = self::VAT_RATES['exempt']['name'];
-            $taxPercentage = self::VAT_RATES['exempt']['percentage'];
+            $taxName = $this->vat_rates['exempt']['name'];
+            $taxPercentage = $this->vat_rates['exempt']['percentage'];
             $smartbill_invoice['mentions'] .=
                 "\n\nServicii neimpozabile in Romania conform articolului 133 alineatul 2, litera G din Codul Fiscal.";
         }
 
         if ($stripe_invoice['customer_tax_exempt'] === 'reverse') {
-            $taxName = self::VAT_RATES['reverse']['name'];
-            $taxPercentage = self::VAT_RATES['reverse']['percentage'];
+            $taxName = $this->vat_rates['reverse']['name'];
+            $taxPercentage = $this->vat_rates['reverse']['percentage'];
             $smartbill_invoice['mentions'] .= "\n\nTaxarea inversă, conform prevederilor art. 331 din Codul Fiscal.";
         }
 
@@ -139,7 +140,7 @@ class Smartbill
             'isCash' => false
         ];
 
-        return $this->sendPostJsonRequest('SBORO/api/invoice', $smartbill_invoice);
+        return $smartbill_invoice;
     }
 
     public function getPayment(string $smartbill_invoice_number): array
