@@ -79,6 +79,7 @@ In prezent exista urmatoarele limitari:
   b. rularea pe intervale mai scurte sau
   c. actualizarea scriptului sa pagineze rezultatele.
 2. Scriptul (inca) nu proceseaza stornarile in Stripe.
+3. Discounturile nu sunt suportate.
 
 ## Teste
 
@@ -105,6 +106,12 @@ $ composer fix
 Pentru a semnala probleme, deschide un Issue nou.
 
 Pentru a aduce imbunatatiri sau reparatii acestui script, oricing poate face fork si deschide un Pull Request inapoi.
+
+## Probleme uzuale
+
+> Invoice SMURF1006 value mismatch, Stripe invoice XX0000XX-0002 value 45.17, Smartbill invoice value 45.20. Please check the invoices.
+
+Apare cand valoarea calculata de Smartbill, dupa aplicarea TVA nu corespunde cu valoarea incasata in Stripe. In acest caz verifica daca ai cotele TVA corect introduse.
 
 ## Licenta
 
