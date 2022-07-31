@@ -7,6 +7,11 @@ namespace App;
 use DateTime;
 use GuzzleHttp\Client;
 
+/**
+ * Smartbill Class
+ *
+ * Manages all requests to Smartbill API.
+ */
 class Smartbill
 {
     private const REQUEST_TIMEOUT = 10.0;
@@ -32,6 +37,9 @@ class Smartbill
         ]);
     }
 
+    /**
+     * Create invoice based on the Stripe invoice and charge details
+     */
     public function createInvoice(array $stripe_invoice, array $stripe_charge): array
     {
         $smartbill_invoice = $this->buildInvoice($stripe_invoice, $stripe_charge);
@@ -39,6 +47,9 @@ class Smartbill
         return $this->sendPostJsonRequest('SBORO/api/invoice', $smartbill_invoice);
     }
 
+    /**
+     * Build a Smartbill invoice array structure based on the Stripe invoice and charge.
+     */
     public function buildInvoice(array $stripe_invoice, array $stripe_charge): array
     {
         // Smartbill issue date will be the Stripe payment date, not Stripe invoice date
@@ -113,6 +124,7 @@ class Smartbill
             $smartbill_invoice['mentions'] .= "\n\nTaxarea inversă, conform prevederilor art. 331 din Codul Fiscal.";
         }
 
+        // Add products to the invoice
         foreach ($stripe_invoice['lines']['data'] as $line) {
             $product = [
                 'quantity' => $line['quantity'],
@@ -143,6 +155,9 @@ class Smartbill
         return $smartbill_invoice;
     }
 
+    /**
+     * Retrive an invoice payment status for a Smartbill invoice.
+     */
     public function getPayment(string $smartbill_invoice_number): array
     {
         return $this->sendGetRequest('SBORO/api/invoice/paymentstatus', [
@@ -152,6 +167,9 @@ class Smartbill
         ]);
     }
 
+    /**
+     * Send a GET request to the Smartbill API.
+     */
     private function sendGetRequest(string $path, array $parameters = []): array
     {
         $response = $this->client->request('GET', $path, [
@@ -164,6 +182,9 @@ class Smartbill
         return $body;
     }
 
+    /**
+     * Send a POST request to the Smartbill API, with a JSON payload.
+     */
     private function sendPostJsonRequest(string $path, array $json_body = []): array
     {
         $response = $this->client->request('POST', $path, [
@@ -174,6 +195,9 @@ class Smartbill
         return json_decode($response->getBody()->getContents(), true);
     }
 
+    /**
+     * Build the headers for the Smartbill API requests.
+     */
     private function buildHeaders(): array
     {
         return [
@@ -183,6 +207,9 @@ class Smartbill
         ];
     }
 
+    /**
+     * Inject a Guzzle Client to the class, useful for testing.
+     */
     public function setClient(Client $client): self
     {
         $this->client = $client;

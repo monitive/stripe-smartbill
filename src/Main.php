@@ -8,10 +8,16 @@ use Composer\Script\Event;
 use DateTime;
 use Dotenv\Dotenv;
 
+/**
+ * The main execution entrypoint
+ *
+ * This file is called by the composer command line script.
+ * It loads the configuration, settings and runs the invoice generator tool.
+ */
 class Main
 {
     /**
-     * Genereaza facturi Smartbill pe baza platilor din Stripe
+     * Generate invoices for all charges created after the given date
      */
     public static function generate(Event $event): int
     {
@@ -31,6 +37,9 @@ class Main
         return 0;
     }
 
+    /**
+     * Get the start date from the command line $arguments
+     */
     private static function getStartDate(array $arguments): string
     {
         $date = DateTime::createFromFormat('Y-m-d', $arguments[0]);
@@ -42,6 +51,9 @@ class Main
         return $date->format('Y-m-d');
     }
 
+    /**
+     * Show script help info and exit
+     */
     private static function showHelpAndExit(string $message = ''): void
     {
         echo "This script generates Smartbill invoices for Stripe charges after a given date.\n";
@@ -55,6 +67,9 @@ class Main
         exit(1);
     }
 
+    /**
+     * Load the configuration from the .env file
+     */
     private static function loadConfig(): void
     {
         $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
@@ -67,6 +82,9 @@ class Main
         ]);
     }
 
+    /**
+     * Ensures there is a valid vat_rates.json file in the project root
+     */
     private static function checkVatRatesFile(): void
     {
         if (!file_exists(__DIR__ . '/../vat_rates.json')) {

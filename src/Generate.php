@@ -8,7 +8,9 @@ use DateTime;
 
 class Generate
 {
+    /** @var array Settings passed from the .env file */
     private array $settings;
+    /** @Var Logger class that logs the script's output */
     private Logger $logger;
 
     public function __construct(array $settings)
@@ -17,11 +19,16 @@ class Generate
         $this->logger = new Logger();
     }
 
+    /**
+     * Run the main logic of the script, which retrieves charges and
+     * generates invoices for them.
+     */
     public function run(DateTime $date_start): void
     {
         $stripe = new Stripe($this->settings['STRIPE_SECRET_KEY']);
 
         $charges = $stripe->getChargeIdsAfterDateWithoutSmartbillMeta($date_start);
+
         // Sort the charges alphabetically by their creation date (key).
         // This is required so that we can create the Smartbill invoices in
         // the correct chronological order in which the charges have been created.
@@ -38,7 +45,6 @@ class Generate
             // Get the charge details from Stripe.
             $charge = $stripe->getChargeById($charge_id);
             $invoice = $stripe->getInvoiceById($charge['invoice']);
-            // $customer = $stripe->getCustomerById($charge['customer']);
 
             $this->logger->log(sprintf(
                 'Stripe charge %s created %s value %s %.2f',
@@ -72,7 +78,10 @@ class Generate
             }
 
             // Update the charge with the Smartbill invoice ID.
-            //TODO: $stripe->updateChargeMeta('smartbill_invoice', $smartbill_id);
+            $stripe->updateCharge(
+                $charge['id'],
+                sprintf('metadata[smartbill_invoice]=%s%s', $smartbill_id['series'], $smartbill_id['number'])
+            );
         }
     }
 }

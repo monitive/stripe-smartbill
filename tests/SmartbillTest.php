@@ -400,4 +400,23 @@ final class SmartbillTest extends TestCase
             'status' => 'succeeded'
         ];
     }
+
+    public function testItRetrievesThePaymentStatusForAnInvoice()
+    {
+        $mock = new MockHandler([
+            new Response(200, [], json_encode([
+                'invoiceTotalAmount' => 150,
+                'paidAmount' => 500,
+            ])),
+        ]);
+        $this->smartbill->setClient(
+            new Client(['handler' => HandlerStack::create($mock)])
+        );
+
+        // execute
+        $response = $this->smartbill->getPayment('123456');
+
+        $this->assertSame(150, $response['invoiceTotalAmount']);
+        $this->assertSame(500, $response['paidAmount']);
+    }
 }
