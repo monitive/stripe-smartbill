@@ -1,4 +1,15 @@
 {
+    "name": "monitive/stripe-smartbill",
+    "description": "Generate Smartbill invoices based on Stripe payments & invoices",
+    "minimum-stability": "dev",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lucian Daniliuc",
+            "email": "dlucian@gmail.com"
+        }
+    ],
     "require": {
         "guzzlehttp/guzzle": "^7.2",
         "vlucas/phpdotenv": "^5.4"
