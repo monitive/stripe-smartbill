@@ -818,7 +818,7 @@
                 "portable"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-ctype/tree/main"
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.27.0"
             },
             "funding": [
                 {
@@ -902,7 +902,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/main"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.27.0"
             },
             "funding": [
                 {
@@ -986,7 +986,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/main"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.27.0"
             },
             "funding": [
                 {
@@ -1227,12 +1227,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "2f1fd784fe5560675722a1e5cbbcece5f43bf3a0"
+                "reference": "1df465cd901414affcf9a04ef041cf3aedad73b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/2f1fd784fe5560675722a1e5cbbcece5f43bf3a0",
-                "reference": "2f1fd784fe5560675722a1e5cbbcece5f43bf3a0",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/1df465cd901414affcf9a04ef041cf3aedad73b1",
+                "reference": "1df465cd901414affcf9a04ef041cf3aedad73b1",
                 "shasum": ""
             },
             "require": {
@@ -1276,7 +1276,7 @@
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
                 "source": "https://github.com/nikic/PHP-Parser/tree/4.x"
             },
-            "time": "2022-09-10T20:41:13+00:00"
+            "time": "2022-11-13T15:33:17+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -1403,12 +1403,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "858b0f26c8b12ed8f9bf1a610e1470af6950c5da"
+                "reference": "3a8c5a70f0cd069fbe0d2cbf785b4da9a6ff2c4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/858b0f26c8b12ed8f9bf1a610e1470af6950c5da",
-                "reference": "858b0f26c8b12ed8f9bf1a610e1470af6950c5da",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/3a8c5a70f0cd069fbe0d2cbf785b4da9a6ff2c4d",
+                "reference": "3a8c5a70f0cd069fbe0d2cbf785b4da9a6ff2c4d",
                 "shasum": ""
             },
             "require": {
@@ -1472,7 +1472,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-11-07T16:54:48+00:00"
+            "time": "2022-11-20T05:57:29+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1721,12 +1721,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "01e248b486d7f4a144405c0a83c1a88f59989808"
+                "reference": "586c71b0b4e5e574fb4a5e71f5231b09097737ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/01e248b486d7f4a144405c0a83c1a88f59989808",
-                "reference": "01e248b486d7f4a144405c0a83c1a88f59989808",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/586c71b0b4e5e574fb4a5e71f5231b09097737ce",
+                "reference": "586c71b0b4e5e574fb4a5e71f5231b09097737ce",
                 "shasum": ""
             },
             "require": {
@@ -1815,7 +1815,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-11-08T13:59:34+00:00"
+            "time": "2022-11-24T06:07:19+00:00"
         },
         {
             "name": "sebastian/cli-parser",
