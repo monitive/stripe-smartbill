@@ -8,7 +8,7 @@
         "name": "Taxare inversa"
     },
     "RO": {
-        "percentage": 19,
+        "percentage": 21,
         "name": "Normala"
     },
     "GB": {
@@ -34,5 +34,9 @@
     "GR": {
         "percentage": 24,
         "name": "Grecia"
+    },
+    "FI": {
+        "percentage": 25.5,
+        "name": "FI VAT"
     }
 }

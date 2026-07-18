@@ -111,7 +111,12 @@ Pentru a aduce imbunatatiri sau reparatii acestui script, oricing poate face for
 
 > Invoice SMURF1006 value mismatch, Stripe invoice XX0000XX-0002 value 45.17, Smartbill invoice value 45.20. Please check the invoices.
 
-Apare cand valoarea calculata de Smartbill, dupa aplicarea TVA nu corespunde cu valoarea incasata in Stripe. In acest caz verifica daca ai cotele TVA corect introduse.
+Apare cand valoarea calculata de Smartbill, dupa aplicarea TVA nu corespunde cu valoarea incasata in Stripe. In acest caz verifica:
+
+- daca ai cotele TVA corect introduse;
+- daca a fost aplicat vreun discount in Stripe;
+
+După modificarea facturii din Smartbill ca să corespundă cu încasarea din Stripe, deschide in Stripe încasarea (payment) și adauga un meta attribute cu numele `smartbill_invoice` și valoarea numarul facturii (ex. “M999“). Apoi rulează scriptul din nou, cu aceeași data. Respectiva plată/factură nu va mai fi procesată din nou.
 
 ## Licenta
 

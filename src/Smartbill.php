@@ -52,8 +52,8 @@ class Smartbill
      */
     public function buildInvoice(array $stripe_invoice, array $stripe_charge): array
     {
-        // Smartbill issue date will be the Stripe payment date, not Stripe invoice date
-        $issueDate = DateTime::createFromFormat('U', (string) $stripe_charge['created'])->format('Y-m-d');
+        // Smartbill issue date will be today's date, not Stripe payment date
+        $today = (new DateTime())->format('Y-m-d');
 
         $smartbill_invoice = [
             'companyVatCode' => (string) $this->settings['SMARTBILL_COMPANY_CUI'],
@@ -69,8 +69,8 @@ class Smartbill
                 'saveToDb' => false,
                 'name' => (string) ucwords(trim($stripe_invoice['customer_name']))
             ],
-            'issueDate' => $issueDate,
-            'dueDate' => $issueDate,
+            'issueDate' => $today,
+            'dueDate' => $today,
             'products' => [],
             // 'precision' => 2,
             'language' => 'RO',

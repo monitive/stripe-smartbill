@@ -63,6 +63,12 @@ class Generate
                 $smartbill_id['number']
             ));
 
+            // Update the charge with the Smartbill invoice ID.
+            $stripe->updateCharge(
+                $charge['id'],
+                sprintf('metadata[smartbill_invoice]=%s%s', $smartbill_id['series'], $smartbill_id['number'])
+            );
+
             // Check created invoice value vs payment value
             $smartbill_payment = $smartbill->getPayment($smartbill_id['number']);
             if ($smartbill_payment['invoiceTotalAmount'] !== $smartbill_payment['paidAmount']) {
@@ -76,12 +82,6 @@ class Generate
                     $smartbill_payment['invoiceTotalAmount']
                 ));
             }
-
-            // Update the charge with the Smartbill invoice ID.
-            $stripe->updateCharge(
-                $charge['id'],
-                sprintf('metadata[smartbill_invoice]=%s%s', $smartbill_id['series'], $smartbill_id['number'])
-            );
         }
     }
 }
